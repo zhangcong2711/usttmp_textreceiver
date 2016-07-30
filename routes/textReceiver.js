@@ -64,6 +64,17 @@ exports.fnInterfaceResponser = function(req, res, next){
     var methodName = message.methodName;
     var methodBody = message.methodBody;
 
+    switch (methodName){
+        case 'checkStatus':
+            break;
+        case 'startUp':
+            break;
+        case 'shutdown':
+            break;
+
+        default:
+
+    }
 
 
 };
