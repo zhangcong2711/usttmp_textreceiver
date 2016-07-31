@@ -5,11 +5,12 @@
 
 var mysql = require('mysql');
 var pool  = mysql.createPool({
-    host: 'localhost',
+    host: '192.168.0.103',
     user: 'root',
     password: 'root.123',
     database: 'USTTMP',
-    port: 3306
+    port: 3306,
+    connectionLimit : 100
 });
 
 
@@ -31,9 +32,10 @@ exports.fnAdd = function(req, res, next){
             res.send('<message><result>failed</result><info>'+connerr.stack+'</info></message>');
         }else{
             var insertSQL="INSERT INTO c_rawtext(mme_lastupdate, mme_updater, title, text, tag, text_createdate) "
-                + "VALUES (NOW(), 'AK', '"+title+"', '"+text+"', '"+tag+"', '"+textcreatetime+"')";
+                + "VALUES (NOW(), 'AK', ?, ?, ?, ?)";
+
             //insert
-            connection.query(insertSQL, function (sqlerr, res1) {
+            connection.query(insertSQL, [title,text,tag,textcreatetime], function (sqlerr, res1) {
                 if (sqlerr){
                     console.log(sqlerr);
 
@@ -46,6 +48,8 @@ exports.fnAdd = function(req, res, next){
                 }
             });
         }
+
+        connection.release();
     });
 
 
